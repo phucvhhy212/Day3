@@ -1,5 +1,3 @@
-Path: /
-Schema: https
-Body: 
-Host: localhost:7130
-QueryString: ?id=122112
+Path: / || Schema: https || Body: {
+    "id":1
+} || Host: localhost:7130 || QueryString: 

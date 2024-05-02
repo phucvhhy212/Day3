@@ -27,19 +27,14 @@ namespace Day3
             var qs = httpContext.Request.QueryString.ToString();
             var body = httpContext.Request.Body.ToString();
 
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Path: {path} || Schema: {scheme} || Body: {requestBody} || Host: {host} || QueryString: {qs}");
             using (StreamWriter writeText = new StreamWriter("siu.txt"))
             {
-                writeText.WriteLine($"Path: {path}");
-                writeText.WriteLine($"Schema: {scheme}");
-                writeText.WriteLine($"Body: {requestBody}");
-                writeText.WriteLine($"Host: {host}");
-                writeText.WriteLine($"QueryString: {qs}");
+                writeText.WriteLine(sb);
             }
-            _logger.LogInformation($"Path: {path}");
-            _logger.LogInformation($"Body: {requestBody}");
-            _logger.LogInformation($"Schema: {scheme}");
-            _logger.LogInformation($"QueryString: {qs}");
-            _logger.LogInformation($"Host: {host}");
+
+            _logger.LogInformation(sb.ToString());
             return _next(httpContext);
         }
     }
