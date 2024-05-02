@@ -1,0 +1,5 @@
+Path: /
+Schema: https
+Body: Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpRequestStream
+Host: localhost:7130
+QueryString: ?id=1
