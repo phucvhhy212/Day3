@@ -8,19 +8,35 @@ namespace Day3
     public class CustomMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<CustomMiddleware> _logger;
 
-        public CustomMiddleware(RequestDelegate next)
+        public CustomMiddleware(RequestDelegate next, ILogger<CustomMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public Task Invoke(HttpContext httpContext)
         {
-            httpContext.Items.Add("Schema", httpContext.Request.Scheme);
-            httpContext.Items.Add("Host", httpContext.Request.Host.ToString());
-            httpContext.Items.Add("Path", httpContext.Request.Path.ToString());
-            httpContext.Items.Add("QueryString", httpContext.Request.QueryString.ToString());
-            httpContext.Items.Add("Body", httpContext.Request.Body.ToString());
+            var scheme = httpContext.Request.Scheme;
+            var host = httpContext.Request.Host.ToString();
+            var path = httpContext.Request.Path.ToString();
+            var qs = httpContext.Request.QueryString.ToString();
+            var body = httpContext.Request.Body.ToString();
+
+            using (StreamWriter writeText = new StreamWriter("siu.txt"))
+            {
+                writeText.WriteLine($"Path: {path}");
+                writeText.WriteLine($"Schema: {scheme}");
+                writeText.WriteLine($"Body: {body}");
+                writeText.WriteLine($"Host: {host}");
+                writeText.WriteLine($"QueryString: {qs}");
+            }
+            _logger.LogInformation($"Path: {path}");
+            _logger.LogInformation($"Body: {body}");
+            _logger.LogInformation($"Schema: {scheme}");
+            _logger.LogInformation($"QueryString: {qs}");
+            _logger.LogInformation($"Host: {host}");
             return _next(httpContext);
         }
     }
