@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Day3
@@ -16,8 +17,10 @@ namespace Day3
             _logger = logger;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task<Task> Invoke(HttpContext httpContext)
         {
+            httpContext.Request.EnableBuffering();
+            string requestBody = await new StreamReader(httpContext.Request.Body, Encoding.UTF8).ReadToEndAsync();
             var scheme = httpContext.Request.Scheme;
             var host = httpContext.Request.Host.ToString();
             var path = httpContext.Request.Path.ToString();
@@ -28,12 +31,12 @@ namespace Day3
             {
                 writeText.WriteLine($"Path: {path}");
                 writeText.WriteLine($"Schema: {scheme}");
-                writeText.WriteLine($"Body: {body}");
+                writeText.WriteLine($"Body: {requestBody}");
                 writeText.WriteLine($"Host: {host}");
                 writeText.WriteLine($"QueryString: {qs}");
             }
             _logger.LogInformation($"Path: {path}");
-            _logger.LogInformation($"Body: {body}");
+            _logger.LogInformation($"Body: {requestBody}");
             _logger.LogInformation($"Schema: {scheme}");
             _logger.LogInformation($"QueryString: {qs}");
             _logger.LogInformation($"Host: {host}");
