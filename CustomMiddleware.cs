@@ -25,7 +25,7 @@ namespace Day3
             var host = httpContext.Request.Host.ToString();
             var path = httpContext.Request.Path.ToString();
             var qs = httpContext.Request.QueryString.ToString();
-            var body = httpContext.Request.Body.ToString();
+            
 
             using (StreamWriter writeText = new StreamWriter("siu.txt"))
             {
